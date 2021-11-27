@@ -25,6 +25,7 @@ namespace Pester
         private StringOption _verbosity;
         private StringOption _stackTraceVerbosity;
         private StringOption _ciFormat;
+        private BoolOption _tags;
 
         public static OutputConfiguration Default { get { return new OutputConfiguration(); } }
         public static OutputConfiguration ShallowClone(OutputConfiguration configuration)
@@ -36,9 +37,10 @@ namespace Pester
         {
             if (configuration != null)
             {
-                Verbosity = configuration.GetObjectOrNull<string>("Verbosity") ?? Verbosity;
-                StackTraceVerbosity = configuration.GetObjectOrNull<string>("StackTraceVerbosity") ?? StackTraceVerbosity;
-                CIFormat = configuration.GetObjectOrNull<string>("CIFormat") ?? CIFormat;
+                Verbosity = configuration.GetObjectOrNull<string>(nameof(Verbosity)) ?? Verbosity;
+                StackTraceVerbosity = configuration.GetObjectOrNull<string>(nameof(StackTraceVerbosity)) ?? StackTraceVerbosity;
+                CIFormat = configuration.GetObjectOrNull<string>(nameof(CIFormat)) ?? CIFormat;
+                Tags = configuration.GetValueOrNull<bool>(nameof(Tags)) ?? Tags;
             }
         }
 
@@ -47,6 +49,7 @@ namespace Pester
             Verbosity = new StringOption("The verbosity of output, options are None, Normal, Detailed and Diagnostic.", "Normal");
             StackTraceVerbosity = new StringOption("The verbosity of stacktrace output, options are None, FirstLine, Filtered and Full.", "Filtered");
             CIFormat = new StringOption("The CI format of error output in build logs, options are None, Auto, AzureDevops and GithubActions.", "Auto");
+            Tags = new BoolOption("Append tag names to title of Describe, Context of It block.", false);
         }
 
         public StringOption Verbosity
@@ -93,6 +96,22 @@ namespace Pester
                 else
                 {
                     _ciFormat = new StringOption(_ciFormat, value?.Value);
+                }
+            }
+        }
+
+        public BoolOption Tags
+        {
+            get { return _tags; }
+            set
+            {
+                if (_tags == null)
+                {
+                    _tags = value;
+                }
+                else
+                {
+                    _tags = new BoolOption(_tags, value.Value);
                 }
             }
         }

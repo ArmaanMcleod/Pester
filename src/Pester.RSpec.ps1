@@ -408,6 +408,9 @@ function New-PesterConfiguration {
       CIFormat: The CI format of error output in build logs, options are None, Auto, AzureDevops and GithubActions.
       Default value: 'Auto'
 
+      Tags: Append tag names to title of Describe, Context of It block.
+      Default value: $false
+
     TestDrive:
       Enabled: Enable TestDrive.
       Default value: $true
